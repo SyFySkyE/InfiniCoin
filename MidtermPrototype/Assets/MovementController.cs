@@ -48,6 +48,10 @@ public class MovementController : MonoBehaviour
             playerrb.AddForce(Vector3.up * jumpForce);
             isGrounded = false;
         }
+        if (playerrb.velocity.y == 0)
+        {
+            isGrounded = true;
+        }
     }
 
     private void ConstrainMovement()
