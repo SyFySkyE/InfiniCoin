@@ -62,5 +62,9 @@ public class PlayerMovement : MonoBehaviour
         {
             canJump = true;
         }
+        else if (collision.gameObject.CompareTag("Obstacle"))
+        {
+            gameOver = true;
+        }
     }
 }
