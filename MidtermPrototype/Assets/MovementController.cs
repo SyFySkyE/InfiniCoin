@@ -43,14 +43,10 @@ public class MovementController : MonoBehaviour
 
     private void CheckForJump()
     {
-        if (Input.GetButton("Jump") && isGrounded)
+        if (Input.GetButtonDown("Jump") && isGrounded)
         {
-            playerrb.AddForce(Vector3.up * jumpForce);
+            playerrb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             isGrounded = false;
-        }
-        if (playerrb.velocity.y == 0)
-        {
-            isGrounded = true;
         }
     }
 
@@ -64,6 +60,14 @@ public class MovementController : MonoBehaviour
         else if (transform.position.x <= -xConstraint)
         {
             transform.position = new Vector3(-xConstraint, currentPos.y, currentPos.z);
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            isGrounded = true;
         }
     }
 }
