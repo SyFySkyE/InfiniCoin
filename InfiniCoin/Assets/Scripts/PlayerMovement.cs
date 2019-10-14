@@ -10,11 +10,15 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float xConstrain = 5.5f;
     [SerializeField] private float gravityModifier = 3f;
     [SerializeField] private float secondsBeforeReload = 1.5f;
+    [SerializeField] private float jumpVolume = 5f;
 
-    [SerializeField] private SceneManager sceneManager;
+    [SerializeField] private AudioClip jumpSfx;
+
+    [SerializeField] private SceneManager sceneManager; // TODO PlayerMovement should NOT know about sceneManager. Maybe use broadcastMessage()? Soc
 
     private Rigidbody playerRB;
     private Animator playerAnim;
+    private AudioSource audio;
 
     private bool canJump = true;
     private bool gameOver = false;
@@ -22,9 +26,10 @@ public class PlayerMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Physics.gravity *= gravityModifier;
+        Physics.gravity *= gravityModifier; // TODO Bug where jumping is borked when scene is reloaded. Could be this.
         playerRB = GetComponent<Rigidbody>();
         playerAnim = GetComponent<Animator>();
+        audio = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -63,6 +68,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (Input.GetButtonDown("Jump") && canJump)
         {
+            audio.PlayOneShot(jumpSfx, jumpVolume);
             playerAnim.SetTrigger("Jump_trig");
             playerRB.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             canJump = false;
@@ -81,9 +87,9 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private IEnumerator StartGameOverSequence()
+    private IEnumerator StartGameOverSequence() 
     {
         yield return new WaitForSeconds(secondsBeforeReload);
-        sceneManager.ReloadScene();
+        sceneManager.ReloadScene(); // TODO SoC
     }
 }

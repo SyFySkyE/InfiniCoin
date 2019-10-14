@@ -64,6 +64,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Coin.cs" />
     <Compile Include="Assets\Scripts\FollowPlayer.cs" />
+    <Compile Include="Assets\Scripts\GameSession.cs" />
     <Compile Include="Assets\Scripts\Ground.cs" />
     <Compile Include="Assets\Scripts\GroundSpawner.cs" />
     <Compile Include="Assets\Scripts\MusicPlayer.cs" />
