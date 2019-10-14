@@ -8,8 +8,13 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float horizontalSpeed = 2f;
     [SerializeField] private float jumpForce = 17f;
     [SerializeField] private float xConstrain = 5.5f;
+    [SerializeField] private float gravityModifier = 3f;
+    [SerializeField] private float secondsBeforeReload = 1.5f;
+
+    [SerializeField] private SceneManager sceneManager;
 
     private Rigidbody playerRB;
+    private Animator playerAnim;
 
     private bool canJump = true;
     private bool gameOver = false;
@@ -17,13 +22,19 @@ public class PlayerMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Physics.gravity *= gravityModifier;
         playerRB = GetComponent<Rigidbody>();
+        playerAnim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
         if (!gameOver) MoveForward();
+        else
+        {
+            StartCoroutine(StartGameOverSequence());
+        }
         MoveHorizontally();
         Jump();
     }
@@ -31,6 +42,7 @@ public class PlayerMovement : MonoBehaviour
     private void MoveForward()
     {
         playerRB.velocity = new Vector3(playerRB.velocity.x, playerRB.velocity.y, forwardSpeed);
+        playerAnim.SetFloat("Speed_f", 0.7f);
     }
 
     private void MoveHorizontally()
@@ -51,6 +63,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (Input.GetButtonDown("Jump") && canJump)
         {
+            playerAnim.SetTrigger("Jump_trig");
             playerRB.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             canJump = false;
         }
@@ -66,5 +79,11 @@ public class PlayerMovement : MonoBehaviour
         {
             gameOver = true;
         }
+    }
+
+    private IEnumerator StartGameOverSequence()
+    {
+        yield return new WaitForSeconds(secondsBeforeReload);
+        sceneManager.ReloadScene();
     }
 }
