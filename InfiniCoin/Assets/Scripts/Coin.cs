@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Coin : MonoBehaviour
 {
-    [SerializeField] private int coinValue = 100;
     [SerializeField] private AudioClip[] coinSfx;
 
     // Start is called before the first frame update
@@ -23,6 +22,8 @@ public class Coin : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
+            GetComponent<BoxCollider>().enabled = false; // Otherwise gets triggered twice
+            Debug.Log("dwdawdwadaw");
             other.GetComponent<PlayerManager>().AddToScore();
             AudioSource.PlayClipAtPoint(coinSfx[Random.Range(0, coinSfx.Length)], transform.position, 1f);
             Destroy(gameObject);

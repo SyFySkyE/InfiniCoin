@@ -14,6 +14,11 @@ public class PlayerManager : MonoBehaviour
         UpdateCoinText();
     }
 
+    private void Update()
+    {
+        
+    }
+
     private void UpdateCoinText()
     {
         if (coinText != null) // Without this check, Start calls before coinText is assigned (Though it's serialized?) Resulting in Critical error despite working
