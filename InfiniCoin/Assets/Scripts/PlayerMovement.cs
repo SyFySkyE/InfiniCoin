@@ -36,6 +36,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(gameOver);
         if (!gameOver) MoveForward();
         else
         {
@@ -47,7 +48,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void MoveForward()
     {
-        Debug.Log(canJump);
         playerRB.velocity = new Vector3(playerRB.velocity.x, playerRB.velocity.y, forwardSpeed);
         playerAnim.SetFloat("Speed_f", 0.7f);
     }
