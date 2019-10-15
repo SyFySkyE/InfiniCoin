@@ -13,14 +13,15 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float jumpVolume = 5f;
 
     [SerializeField] private AudioClip jumpSfx;
+    [SerializeField] private ParticleSystem dustKickVfx;
 
     [SerializeField] private SceneManager sceneManager; // TODO PlayerMovement should NOT know about sceneManager. Maybe use broadcastMessage()? Soc
 
     private Rigidbody playerRB;
     private Animator playerAnim;
-    private AudioSource audio;
+    private AudioSource playerAudio;
 
-    private bool canJump = true;
+    private bool canJump = true; // TODO Switch to enum
     private bool gameOver = false;
 
     // Start is called before the first frame update
@@ -29,7 +30,7 @@ public class PlayerMovement : MonoBehaviour
         Physics.gravity *= gravityModifier; // TODO Bug where jumping is borked when scene is reloaded. Could be this.
         playerRB = GetComponent<Rigidbody>();
         playerAnim = GetComponent<Animator>();
-        audio = GetComponent<AudioSource>();
+        playerAudio = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -46,6 +47,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void MoveForward()
     {
+        Debug.Log(canJump);
         playerRB.velocity = new Vector3(playerRB.velocity.x, playerRB.velocity.y, forwardSpeed);
         playerAnim.SetFloat("Speed_f", 0.7f);
     }
@@ -68,10 +70,11 @@ public class PlayerMovement : MonoBehaviour
     {
         if (Input.GetButtonDown("Jump") && canJump)
         {
-            audio.PlayOneShot(jumpSfx, jumpVolume);
+            playerAudio.PlayOneShot(jumpSfx, jumpVolume);
             playerAnim.SetTrigger("Jump_trig");
             playerRB.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             canJump = false;
+            dustKickVfx.Stop();
         }
     }
 
@@ -80,6 +83,7 @@ public class PlayerMovement : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             canJump = true;
+            dustKickVfx.Play();
         }
         else if (collision.gameObject.CompareTag("Obstacle"))
         {
@@ -89,6 +93,7 @@ public class PlayerMovement : MonoBehaviour
 
     private IEnumerator StartGameOverSequence() 
     {
+        dustKickVfx.Stop();
         yield return new WaitForSeconds(secondsBeforeReload);
         sceneManager.ReloadScene(); // TODO SoC
     }

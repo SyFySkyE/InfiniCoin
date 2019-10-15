@@ -21,9 +21,7 @@ public class Coin : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
-        {
-            GetComponent<BoxCollider>().enabled = false; // Otherwise gets triggered twice
-            Debug.Log("dwdawdwadaw");
+        {            
             other.GetComponent<PlayerManager>().AddToScore();
             AudioSource.PlayClipAtPoint(coinSfx[Random.Range(0, coinSfx.Length)], transform.position, 1f);
             Destroy(gameObject);

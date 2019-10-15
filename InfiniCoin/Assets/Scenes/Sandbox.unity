@@ -3659,10 +3659,10 @@ PrefabInstance:
       propertyPath: coinText
       value: 
       objectReference: {fileID: 1007517778}
-    - target: {fileID: 1052755347, guid: 814f4326a50812947b2469896d89a215, type: 3}
-      propertyPath: sceneManager
-      value: 
-      objectReference: {fileID: 1883135426}
+    - target: {fileID: 1159972426, guid: 814f4326a50812947b2469896d89a215, type: 3}
+      propertyPath: InitialModule.startSize.scalar
+      value: 0.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 814f4326a50812947b2469896d89a215, type: 3}
 --- !u!1001 &1842875904

@@ -21,10 +21,7 @@ public class PlayerManager : MonoBehaviour
 
     private void UpdateCoinText()
     {
-        if (coinText != null) // Without this check, Start calls before coinText is assigned (Though it's serialized?) Resulting in Critical error despite working
-        {
-            coinText.text = coinsCollected.ToString();
-        }        
+         coinText.text = coinsCollected.ToString();              
     }
 
     public void AddToScore()
